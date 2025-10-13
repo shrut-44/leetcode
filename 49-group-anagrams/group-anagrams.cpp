@@ -1,28 +1,15 @@
 class Solution {
 public:
-    bool checkAna(string word1, string word2){
-        if(word1.size()!=word2.size()){
-            return false;
-        }
-        sort(word1.begin(),word1.end());
-        sort(word2.begin(),word2.end());
-        return word1==word2;
-    }
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string,vector<string>> map;
+        for(auto& str : strs){
+            string key = str;
+            sort(key.begin(),key.end());
+            map[key].push_back(str);
+        }
         vector<vector<string>> res;
-        for(int i=0;i<strs.size();i++){
-            int j=0;
-            bool flag = false;
-            while(j<res.size() && flag==false){
-                if(checkAna(res[j][0],strs[i])){
-                    res[j].push_back(strs[i]);
-                    flag = true;
-                }
-                j++;
-            }
-            if(!flag){
-                res.push_back({strs[i]});
-            }
+        for(auto& i : map){
+            res.push_back(i.second);
         }
         return res;
     }
