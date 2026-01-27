@@ -1,30 +1,22 @@
 class Solution {
 public:
-    int atMost(vector<int>& nums, int k){
-        unordered_map<int,int> mp;
+    int atMost(vector<int>& nums, int k) {
+        unordered_map<int, int> freq;
         int i = 0;
         int res = 0;
-        for(int j=0;j<nums.size();j++){
-            mp[nums[j]]=j;
-            if(mp.size()>k){
-                int minIdxKey = -1;
-                for(auto& it : mp){
-                    if(minIdxKey==-1){
-                        minIdxKey = it.first;
-                        continue;
-                    }
-                    if(mp[minIdxKey]>it.second){
-                        minIdxKey = it.first;
-                    }
-                }
-                i = mp[minIdxKey]+1;\
-                mp.erase(minIdxKey);
+        for (int j = 0; j < nums.size(); j++) {
+            freq[nums[j]]++;
+            while (freq.size() > k) {
+                freq[nums[i]]--;
+                if (freq[nums[i]] == 0)
+                    freq.erase(nums[i]);
+                i++;
             }
-            res+=j-i+1;
+            res += j - i + 1;
         }
         return res;
     }
     int subarraysWithKDistinct(vector<int>& nums, int k) {
-        return atMost(nums,k) - atMost(nums,k-1);
+        return atMost(nums, k) - atMost(nums, k - 1);
     }
 };
